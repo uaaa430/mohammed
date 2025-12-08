@@ -1,35 +1,137 @@
-#include "Person.h"
-#include <sstream>
-#include <algorithm>
-#include <numeric>
-#include <iomanip>
-Person::Person(): exam(0.0), finalGrade(0.0) {}
-Person::Person(const std::string& n,const std::string& s): name(n),surname(s),exam(0.0),finalGrade(0.0) {}
-Person::Person(const Person& o)=default;
-Person& Person::operator=(const Person& o)=default;
-Person::~Person()=default;
-std::istream& operator>>(std::istream& is,Person& p){
-    p.homeworks.clear();p.finalGrade=0.0;
-    if(!(is>>p.name>>p.surname))return is;
-    std::string line;std::getline(is,line);if(line.empty())return is;
-    std::istringstream ss(line);double v;std::vector<double> vals;while(ss>>v)vals.push_back(v);
-    if(vals.empty()){p.exam=0.0;}else{p.exam=vals.back();vals.pop_back();p.homeworks=vals;}
+#include"Person.h"
+
+    void Person:: FinalAv() {
+        FinalgradeAvg = std::accumulate(Homework.begin(), Homework.end(), 0.0) / Homework.size() * 0.4 + exam * 0.6;
+    };
+
+    // Calculates median of homework
+double Person::med() {
+    vector<int> temp = Homework;
+    sort(temp.begin(), temp.end());
+    size_t n = temp.size();
+    if (n == 0) return 0.0;
+    if (n % 2 == 0)
+        return (temp[n/2 - 1] + temp[n/2]) / 2.0;
+    else
+        return temp[n/2];
+}
+
+void Person::FinalMed() {
+        FinalgradeMed = med() * 0.4 + exam * 0.6;
+    };
+
+    //default constructor
+    Person::Person ()
+    {
+        firstname = "Test";
+        surname= "Test";
+        Homework = {9,9,9,9,9,9};
+        FinalgradeAvg = 0;
+        FinalgradeMed = 0;
+
+    };
+//parametrized constructor
+    Person :: Person (string A, string B, vector<int> C, int D)
+    {
+        firstname = A;
+        surname =B;
+        Homework = C;
+        FinalgradeAvg = 0;
+        FinalgradeMed = 0;
+    };
+   //copy constructor
+    Person::Person(const Person& other) {
+    firstname = other.firstname;
+    surname = other.surname;
+    Homework = other.Homework;
+    FinalgradeAvg = other.FinalgradeAvg;
+    FinalgradeMed = other.FinalgradeMed;
+}
+
+   //destructor
+    Person::~Person() {
+        firstname.clear();
+        surname.clear();
+        Homework.clear();
+        FinalgradeAvg = 0;
+        FinalgradeMed = 0;
+    };
+
+    //assignment copy operator
+  Person& Person::operator=(const Person& other) {
+    if (this != &other) {
+        firstname = other.firstname;
+        surname = other.surname;
+        Homework = other.Homework;
+        FinalgradeAvg = other.FinalgradeAvg;
+        FinalgradeMed = other.FinalgradeMed;
+    }
+    return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const Person& p) {
+
+
+    os << left << setw(15) << p.firstname << setw(15) << p.surname
+             << fixed << setprecision(2) << setw(20) << p.FinalgradeAvg << setw(15)<< p.FinalgradeMed << endl;
+}
+
+std::istream& operator>>(std::istream& is, Person& p) {
+    cout << "Enter firstname: ";
+    is >> p.firstname;
+    std::cout << "Enter surname: ";
+    is >> p.surname;
+
+
+p.Homework.clear();
+cout<<"1. Enter 'R' to use Random homework & exam grades \n2. Enter 'S' to use your input grades" << endl;
+string t;
+is>>t;
+
+if(t == "R" || t == "r")
+{
+
+    srand(time(0));
+    vector <int> grades (5);
+    for ( int i=0; i <5; ++i )
+    {
+        grades[i] = rand() % 10;
+        p.Homework.push_back(i);
+    }
+
+    int rexam;
+    rexam = rand() % 10;
+    p.exam = rexam;
+
+
+}
+
+else if (t == "S" || t == "s")
+{
+   cout << "Enter the Homework grades (To stop enter a negative number): " << std::endl;
+int temp;
+while (true) {
+    is >> temp;
+    if (temp < 0) break;
+    p.Homework.push_back(temp);
+}
+   cout << "Enter exam grade: ";
+    is >> p.exam;
+}
+
+else{
+    cout << "choose the correct option" << endl;
+}
+    cout << "choose the method of Final grade calculation ( M = Median , A = Average) : ";
+    string choose;
+    cin>> choose;
+    if  (choose == "A" || choose == "a") {
+         p.FinalAv();
+    }
+    if(choose == "m" || choose == "M")
+    {
+         p.FinalMed ();
+    }
+
     return is;
-}
-std::ostream& operator<<(std::ostream& os,const Person& p){
-    os<<p.name<<" "<<p.surname<<" "<<std::fixed<<std::setprecision(2)<<p.finalGrade;return os;
-}
-double Person::computeAverage()const noexcept{
-    if(homeworks.empty())return 0.0;
-    double s=std::accumulate(homeworks.begin(),homeworks.end(),0.0);
-    return s/homeworks.size();
-}
-double Person::computeMedian()const noexcept{
-    if(homeworks.empty())return 0.0;
-    auto v=homeworks;std::sort(v.begin(),v.end());size_t n=v.size();
-    return n%2?v[n/2]:(v[n/2-1]+v[n/2])/2.0;
-}
-void Person::calculateFinal(bool m)noexcept{
-    double hw=m?computeMedian():computeAverage();
-    finalGrade=0.4*hw+0.6*exam;
 }
