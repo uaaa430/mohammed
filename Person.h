@@ -1,29 +1,48 @@
-
+#ifndef PERSON_H
+#define PERSON_H
 
 #include "Lib.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <numeric>
+#include <algorithm>
+#include <iomanip>
 
-class Person
-{
-    public:
-    string firstname, surname;
-    vector <int> Homework;
-    int exam;
-    double FinalgradeAvg;
-    double FinalgradeMed;
+class Person {
+public:
+    // Basic identity info
+    std::string name;
+    std::string surname;
 
+    // Grade storage
+    std::vector<int> hw;
+    int exam{};
 
-    void FinalAv();
-     double med();
-    void FinalMed();
-    Person ();
+    // Final grade results
+    double avgResult{};
+    double medResult{};
 
+    // Constructors
+    Person();
+    Person(const std::string& n, const std::string& s,
+           const std::vector<int>& homework, int examScore);
 
-    Person (string A, string B, vector<int> C, int D);
-
-    ~Person() ;
-    Person(const Person& other) ;
+    // Rule of 3
+    Person(const Person& other);
     Person& operator=(const Person& other);
-   friend std::ostream& operator<<(std::ostream& os, const Person& p);
-    friend std::istream& operator>>(std::istream& is, Person& p);
+    ~Person();
 
+    // Grade computation
+    void computeAverage();
+    void computeMedian();
+
+    // Helper
+    double getMedianValue() const;
+
+    // Stream operators
+    friend std::ostream& operator<<(std::ostream& out, const Person& p);
+    friend std::istream& operator>>(std::istream& in, Person& p);
 };
+
+#endif
