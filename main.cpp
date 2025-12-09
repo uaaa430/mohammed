@@ -1,24 +1,37 @@
-#include"Person.h"
-#include"Lib.h"
+#include "Person.h"
+#include "Lib.h"
 
-int main()
-{
- int num_students;
-    cout << "Enter number of students: ";
-    cin >> num_students;
-    vector<Person> students(num_students);
+int main() {
+    int count;
 
-    for (int i = 0; i < num_students; ++i) {
-        cout << "\nEnter data for student #" << i + 1 << ":\n";
-        cin >> students[i];
+    std::cout << "Enter number of students: ";
+    std::cin >> count;
+
+    // Allocate list of students
+    std::vector<Person> list(count);
+
+    // Input section
+    for (int i = 0; i < count; ++i) {
+        std::cout << "\n--- Student " << (i + 1) << " ---\n";
+        std::cin >> list[i];
     }
 
+    // Header line
+    std::cout << std::left
+              << std::setw(15) << "Name"
+              << std::setw(15) << "Surname"
+              << std::setw(20) << "Final (Avg.)"
+              << std::setw(15) << "Final (Med.)"
+              << "\n";
 
-    // Output
-    cout << left << setw(15) << "Name" << setw(15) << "Surname" << setw(20) << "Final (Avg.)" << setw(15) << "Final (Med.)" << endl;
-    cout << "------------------------------------------------------" << endl;
-    for (const auto &s : students) {cout << s << endl;
+    std::cout << "---------------------------------------------------------------\n";
+
+    // Output students
+    for (const auto& st : list) {
+        std::cout << st << "\n";
     }
 
     return 0;
 }
+
+
