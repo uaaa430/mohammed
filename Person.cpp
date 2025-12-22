@@ -31,14 +31,20 @@ Person::~Person() {
 }
 
 void Person::calculateFinal(bool useMedian) {
+    if (homework.empty()) {
+        finalGrade = 0.0;
+        return;
+    }
+
     double hw;
 
     if (useMedian) {
         std::sort(homework.begin(), homework.end());
         size_t n = homework.size();
-        hw = (n % 2 == 0)
-            ? (homework[n / 2 - 1] + homework[n / 2]) / 2.0
-            : homework[n / 2];
+        if (n % 2 == 0)
+            hw = (homework[n / 2 - 1] + homework[n / 2]) / 2.0;
+        else
+            hw = homework[n / 2];
     } else {
         hw = std::accumulate(homework.begin(), homework.end(), 0.0) / homework.size();
     }
