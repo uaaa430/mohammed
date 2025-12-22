@@ -1,7 +1,7 @@
 #include "Person.h"
 #include <algorithm>
-#include <iomanip>
 #include <numeric>
+#include <iomanip>
 
 Person::Person() : exam(0), finalGrade(0.0) {}
 
@@ -31,28 +31,28 @@ Person::~Person() {
 }
 
 void Person::calculateFinal(bool useMedian) {
-    double hwResult;
+    double hw;
 
     if (useMedian) {
         std::sort(homework.begin(), homework.end());
         size_t n = homework.size();
-        hwResult = (n % 2 == 0)
+        hw = (n % 2 == 0)
             ? (homework[n / 2 - 1] + homework[n / 2]) / 2.0
             : homework[n / 2];
     } else {
-        hwResult = std::accumulate(homework.begin(), homework.end(), 0.0) / homework.size();
+        hw = std::accumulate(homework.begin(), homework.end(), 0.0) / homework.size();
     }
 
-    finalGrade = 0.4 * hwResult + 0.6 * exam;
+    finalGrade = 0.4 * hw + 0.6 * exam;
 }
 
 std::istream& operator>>(std::istream& in, Person& p) {
     in >> p.name >> p.surname;
 
     p.homework.clear();
-    int hw;
-    while (in >> hw && hw != -1) {
-        p.homework.push_back(hw);
+    int h;
+    while (in >> h && h != -1) {
+        p.homework.push_back(h);
     }
 
     in >> p.exam;
