@@ -1,37 +1,28 @@
 #include "Person.h"
-#include "Lib.h"
+#include <vector>
+#include <iostream>
 
 int main() {
+    std::vector<Person> students;
     int count;
+    bool useMedian;
 
-    std::cout << "Enter number of students: ";
+    std::cout << "Use median (1=yes, 0=no): ";
+    std::cin >> useMedian;
+
+    std::cout << "Number of students: ";
     std::cin >> count;
 
-    // Allocate list of students
-    std::vector<Person> list(count);
-
-    // Input section
-    for (int i = 0; i < count; ++i) {
-        std::cout << "\n--- Student " << (i + 1) << " ---\n";
-        std::cin >> list[i];
+    for (int i = 0; i < count; i++) {
+        Person p;
+        std::cin >> p;
+        p.calculateFinal(useMedian);
+        students.push_back(p);
     }
 
-    // Header line
-    std::cout << std::left
-              << std::setw(15) << "Name"
-              << std::setw(15) << "Surname"
-              << std::setw(20) << "Final (Avg.)"
-              << std::setw(15) << "Final (Med.)"
-              << "\n";
-
-    std::cout << "---------------------------------------------------------------\n";
-
-    // Output students
-    for (const auto& st : list) {
-        std::cout << st << "\n";
+    for (const auto& s : students) {
+        std::cout << s << std::endl;
     }
 
     return 0;
 }
-
-
