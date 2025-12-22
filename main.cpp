@@ -4,16 +4,16 @@
 
 int main() {
     std::vector<Person> students;
-    int count;
+    int n;
     bool useMedian;
 
     std::cout << "Use median (1=yes, 0=no): ";
     std::cin >> useMedian;
 
     std::cout << "Number of students: ";
-    std::cin >> count;
+    std::cin >> n;
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < n; i++) {
         Person p;
         std::cin >> p;
         p.calculateFinal(useMedian);
