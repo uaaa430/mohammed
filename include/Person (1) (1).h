@@ -1,39 +1,30 @@
-#include "Lib.h"
-class Timer{
+#ifndef PERSON_H
+#define PERSON_H
+
+#include <string>
+#include <vector>
+
+class Person {
+private:
+    std::string name;
+    std::string surname;
+    std::vector<int> homework;
+    int exam{};
+    double finalGrade{};
+
 public:
- using clock = std::chrono::high_resolution_clock;
-
-std::chrono::time_point<clock> start, temp;
-   std::chrono::duration <double> executiontime;
-
-void timestart( ) ;
-void timetaken();
-};
-void outputtemplate ();
-void filegenerator (const string& filename, size_t n);
-class Person
-{
-    public:
-    string firstname, surname;
-    vector <int> Homework;
-    int exam;
-    double FinalgradeAvg;
-    double FinalgradeMed;
-
-
-    void FinalAv();
-
-     double med();
-    void FinalMed();
-    Person ();
-
-
-    Person (string A, string B, vector<int> C, int D);
-
-    ~Person() ;
-    Person(const Person& other) ;
+    Person();
+    Person(const Person& other);
     Person& operator=(const Person& other);
-   friend std::ostream& operator<<(std::ostream& os, const Person& p);
-    friend std::istream& operator>>(std::istream& is, Person& p);
+    ~Person();
 
+    void calculateFinal(bool useMedian = false);
+    double getFinal() const;
+    std::string getName() const;
+    std::string getSurname() const;
+
+    friend std::istream& operator>>(std::istream& in, Person& p);
+    friend std::ostream& operator<<(std::ostream& out, const Person& p);
 };
+
+#endif
